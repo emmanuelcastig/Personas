@@ -1,0 +1,56 @@
+server:
+  port: 9003
+spring:
+  application:
+    name: "Persona"
+  devtools:
+    add-properties: false
+  r2dbc:
+    host: "localhost"
+    port: 5432
+    database: "personasDB"
+    schema: "public"
+    username: "postgres"
+    password: 1234
+  sql:
+    init:
+      mode: "always"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,prometheus"
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  health:
+    circuitbreakers:
+      enabled: true
+cors:
+  allowed-origins: "http://localhost:4200,http://localhost:9003"
+adapter:
+  restconsumer:
+    timeout: 5000
+    url: "http://localhost:9002"
+resilience4j:
+  circuitbreaker:
+    instances:
+      obtenerBootcamp:
+        registerHealthIndicator: true
+        failureRateThreshold: 50
+        slowCallRateThreshold: 50
+        slowCallDurationThreshold: "2s"
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 10
+        waitDurationInOpenState: "10s"
+      testPost:
+        registerHealthIndicator: true
+        failureRateThreshold: 50
+        slowCallRateThreshold: 50
+        slowCallDurationThreshold: "2s"
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 10
+        waitDurationInOpenState: "10s"
