@@ -33,14 +33,15 @@ public class MyReactiveRepositoryAdapter extends ReactiveAdapterOperations<
     }
 
     @Override
-    public Mono<Long> asignarPersonaABootcamp(Long personaId, Long bootcampId) {
+    public Mono<Persona> asignarPersonaABootcamp(Long personaId, Long bootcampId) {
         PersonaBootcampEntity entity = PersonaBootcampEntity.builder()
                 .idPersona(personaId)
                 .idBootcamp(bootcampId)
                 .build();
 
         return bootcampReactiveRepository.save(entity)
-                .map(PersonaBootcampEntity::getIdBootcamp);
+                .flatMap(saved -> repository.findById(personaId))
+                .map(this::toEntity);
     }
 
     @Override
@@ -53,4 +54,5 @@ public class MyReactiveRepositoryAdapter extends ReactiveAdapterOperations<
     public Flux<Long> obtenerPersonasPorBootcampId(Long bootcampId) {
         return bootcampReactiveRepository.findIdPersonaByIdBootcamp(bootcampId);
     }
+
 }

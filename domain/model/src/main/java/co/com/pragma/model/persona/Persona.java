@@ -1,11 +1,6 @@
 package co.com.pragma.model.persona;
-import lombok.Builder;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-import java.util.List;
+import lombok.*;
 
 @Getter
 @Setter
@@ -17,5 +12,4 @@ public class Persona {
     private String nombre;
     private String correo;
     private int edad;
-    private List<Long> bootcamps;
 }

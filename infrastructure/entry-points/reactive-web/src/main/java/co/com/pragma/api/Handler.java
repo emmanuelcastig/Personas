@@ -3,6 +3,7 @@ package co.com.pragma.api;
 import co.com.pragma.api.dto.AsignarPersonaABootcampRequest;
 import co.com.pragma.api.dto.PersonaRequest;
 import co.com.pragma.api.mapper.PersonaMapper;
+import co.com.pragma.model.persona.consumer.BootcampRestConsumer;
 import co.com.pragma.usecase.persona.PersonaUseCase;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ValidationException;
@@ -25,6 +26,7 @@ public class Handler {
     private final Validator validator;
     private final TransactionalOperator transactionalOperator;
     private final PersonaMapper personaMapper;
+    private final BootcampRestConsumer bootcampRestConsumer;
 
     public Mono<ServerResponse> crearPersona(ServerRequest serverRequest) {
         return serverRequest.bodyToMono(PersonaRequest.class)
@@ -44,7 +46,11 @@ public class Handler {
                 .flatMapMany(req -> Flux.fromIterable(req.getBootcamps())
                         .concatMap(bootcampId -> personaUseCase.asignarPersonaABootcamp(req.getIdPersona(), bootcampId))
                 )
+                .collectList()
                 .as(transactionalOperator::transactional)
+                .flatMapMany(reportes -> Flux.fromIterable(reportes)
+                        .concatMap(bootcampRestConsumer::enviarReporte)
+                )
                 .then(ServerResponse.status(201).build())
                 .onErrorResume(IllegalArgumentException.class,
                         e -> ServerResponse.badRequest().bodyValue(e.getMessage()));
