@@ -44,6 +44,7 @@ public class Handler {
                 .flatMapMany(req -> Flux.fromIterable(req.getBootcamps())
                         .concatMap(bootcampId -> personaUseCase.asignarPersonaABootcamp(req.getIdPersona(), bootcampId))
                 )
+                .as(transactionalOperator::transactional)
                 .then(ServerResponse.status(201).build())
                 .onErrorResume(IllegalArgumentException.class,
                         e -> ServerResponse.badRequest().bodyValue(e.getMessage()));

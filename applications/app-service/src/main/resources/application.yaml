@@ -6,7 +6,7 @@ spring:
   devtools:
     add-properties: false
   r2dbc:
-    host: "localhost"
+    host: "db_personas"
     port: 5432
     database: "personasDB"
     schema: "public"
@@ -14,7 +14,7 @@ spring:
     password: 1234
   sql:
     init:
-      mode: "always"
+      mode: "never"
 management:
   endpoints:
     web:
@@ -32,7 +32,7 @@ cors:
 adapter:
   restconsumer:
     timeout: 5000
-    url: "http://localhost:9002"
+    url: "http://bootcamp:9002"
 resilience4j:
   circuitbreaker:
     instances:
@@ -45,7 +45,7 @@ resilience4j:
         slidingWindowSize: 10
         minimumNumberOfCalls: 10
         waitDurationInOpenState: "10s"
-      testPost:
+      enviarReporte:
         registerHealthIndicator: true
         failureRateThreshold: 50
         slowCallRateThreshold: 50

@@ -10,4 +10,5 @@ import reactor.core.publisher.Flux;
 public interface PersonaBootcampReactiveRepository extends ReactiveCrudRepository<PersonaBootcampEntity, Long>, ReactiveQueryByExampleExecutor<PersonaBootcampEntity> {
     @Query("SELECT id_bootcamp FROM bootcamp_persona WHERE id_persona = :personaId")
     Flux<Long> findIdBootcampByIdPersona(Long personaId);
+    Flux<Long> findIdPersonaByIdBootcamp(Long bootcampId);
 }

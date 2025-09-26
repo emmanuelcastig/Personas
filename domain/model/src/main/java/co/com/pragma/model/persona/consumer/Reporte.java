@@ -1,11 +1,6 @@
-package co.com.pragma.consumer;
+package co.com.pragma.model.persona.consumer;
 
-import co.com.pragma.model.persona.consumer.BootcampResponse;
-import lombok.Builder;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -14,7 +9,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-public class ObjectRequest {
+public class Reporte {
     private List<Long> idPersonas;
     private BootcampResponse bootcamp;
     private int cantidadCapacidades;
